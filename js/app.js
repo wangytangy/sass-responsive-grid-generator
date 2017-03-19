@@ -1,1 +1,1 @@
-console.log("Hey");
+require('../sass/main.css');
