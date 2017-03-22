@@ -19,28 +19,32 @@ section {
 
 @mixin imagegrid($column-num, $margin) {
   // $column-num is number of columns that we want
-  // $margin is the amount of margin between each that we want
+  // $margin is the amount of margin between each panel that we want
 
-  /** we calculate width of each individual panel
-    1) Each panels width will be total width of each row MINUS the sum of all inner margins
-    2) Then we divide that length by number of panels
+  /** we need to calculate the WIDTH of each individual panel
+
+    1) Each panel's width will be:
+      the width of the entire grid MINUS the sum of all inner margins divided by the number of panels
 
     for example:
-      If the grid is 900px wide and we want 5 panels per row with a 1% margin between them...
+      If the grid is 900px wide and we want 5 panels per row with a 1% margin between them
+      we call the mixin function with arguments: 5 and 1%:
 
       Each panel's width is:
-        900px - (4 * 9px) => 864px (accounts for all the space we need for inner margins)
-        864px / 5 => (total space left is divided by the number of panels we want)
-        172.8px
+        900px - ((5 - 1) * 1%) => 864px (accounts for all the space we need for inner margins)
+        864px / 5 (the left over width must be divided by the number of panels we want)
+        => 172.8px
 
-      Each panel will be 172.8px with a margin of 9px.
+      Each panel have a width of 172.8px
 
-      In total they will equal 900px.
-      Left and right sides will line up perfectly against edges of container
+      In total, the panels and inner margins will add up to 900px and
+      left and right sides will line up perfectly against edges of container
   **/
 
   width: ((100% - (($column-num - 1) * $margin)) / $column-num);
 
+
+  // Now we need to calulate the margin for each panel
   // Give every panel a bottom and right margin
   &:nth-child(n) {
     margin-bottom: $margin;
@@ -48,13 +52,13 @@ section {
   }
 
   /**
-    HOWEVER! For each row, the last panel must have no margin.
+    HOWEVER! For each row, the last panel must have no margins.
     Or else the last panel will take up too much space and get pushed
     to the next line.
 
     We need to select every last panel on each row and set margin to 0.
-    For example, if we have 12 panels with 4 columns (3 per row)...
-    we select every 3n (or #{number of columns minus 1}n) panel and set margin to 0
+    For example, if we have 12 panels with 4 columns (4 per row)...
+    we select every 4n panel and set margin to 0
   **/
   &:nth-child(#{$column-num}n) {
     margin-bottom: 0;
